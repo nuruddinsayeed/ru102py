@@ -12,6 +12,7 @@ class SiteDaoRedis(SiteDaoBase, RedisDaoBase):
 
     This class allows persisting (and querying for) Sites in Redis.
     """
+
     def insert(self, site: Site, **kwargs):
         """Insert a Site into Redis."""
         hash_key = self.key_schema.site_hash_key(site.id)
@@ -37,8 +38,16 @@ class SiteDaoRedis(SiteDaoBase, RedisDaoBase):
     def find_all(self, **kwargs) -> Set[Site]:
         """Find all Sites in Redis."""
         # START Challenge #1
-        # Remove this line when you've written code to build `site_hashes`.
-        site_hashes = []  # type: ignore
+        site_ids_key = self.key_schema.site_ids_key()
+        site_ids = self.redis.smembers(site_ids_key)
+
+        site_hashes = []
+        for site_id in site_ids:
+            curr_hash_key = self.key_schema.site_hash_key(site_id)
+            curr_site = self.redis.hgetall(curr_hash_key)
+            if not curr_site:
+                raise SiteNotFound
+            site_hashes.append(curr_site)
         # END Challenge #1
 
         return {FlatSiteSchema().load(site_hash) for site_hash in site_hashes}

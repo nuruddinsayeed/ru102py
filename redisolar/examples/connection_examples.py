@@ -1,6 +1,6 @@
 import redis
 from redis.sentinel import Sentinel
-from rediscluster import RedisCluster
+# from rediscluster import RedisCluster
 
 
 def connection_examples():

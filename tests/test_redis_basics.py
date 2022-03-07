@@ -80,4 +80,5 @@ def test_redis_hash(redis):
     assert stored_properties == earth_properties
 
     # Test that we can get a single property.
-    assert redis.hget(EARTH_KEY, "diameter_km") == earth_properties["diameter_km"]
+    assert redis.hget(
+        EARTH_KEY, "diameter_km") == earth_properties["diameter_km"]
