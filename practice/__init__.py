@@ -1,1 +1,1 @@
-# runiing LASK_APP=redisolar flask run --port=8001
+# runiing FLASK_APP=redisolar flask run --port=8001
